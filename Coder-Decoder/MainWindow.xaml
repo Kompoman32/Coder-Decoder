@@ -6,19 +6,20 @@
         xmlns:local="clr-namespace:Coder_Decoder"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Coder-Decoder" Height="188.199" Width="509.737">
+        Title="Coder-Decoder" Height="198.521" Width="509.737">
     <Grid>
-        <TextBox Name="textBox" AcceptsReturn="True" KeyUp="CountSymbols_OnKeyUp" HorizontalAlignment="Left" Height="70" Margin="10,73,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="474"/>
+        <TextBox Name="textBox" AcceptsReturn="True" KeyUp="CountSymbols_OnKeyUp" HorizontalAlignment="Left" Height="70" Margin="10,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="474"/>
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Height="37" Margin="182,24,0,0" VerticalAlignment="Top" Width="67">
-            <TextBlock Name="charCount" Text="1" TextAlignment="Center"  Height="18" Width="35"/>
+            <TextBox Name="charCount" KeyDown="charCount_KeyDown" LostFocus="charCount_LostFocus" Text="1" TextAlignment="Center"  Height="18" Width="35"/>
             <Button Name="numUp" Content="/\" Width="15" Height="36" Click="NumUp_OnClick"/>
             <Button Name="numDown" Content="V" Width="15" Height="36" Click="NumDown_OnClick"/>
         </StackPanel>
-        
+
         <Button Content="Перевести в изображение" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="167" Click="ToImage_Click" Height="37"/>
         <Button Content="Расшифровать изображение" HorizontalAlignment="Left" Margin="254,24,0,0" VerticalAlignment="Top" Width="230" Click="ToText_Click" Height="37"/>
         <TextBlock Text="Символов в строке" HorizontalAlignment="Left" Margin="163,6,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
         <TextBlock Text="Символов: " HorizontalAlignment="Left" Margin="381,6,0,0" TextWrapping="Wrap"  VerticalAlignment="Top"/>
         <TextBlock Text="0" Name="CountSymbols"   HorizontalAlignment="Left" Margin="443,6,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+        <ProgressBar Name="Bar" HorizontalAlignment="Left" Height="17" Margin="10,66,0,0" VerticalAlignment="Top" Width="474"/>
     </Grid>
 </Window>
