@@ -85,9 +85,9 @@ namespace Coder_Decoder
             while (s.IndexOf("  ") > -1) s = s.Replace("  ", " ");
             foreach (string c in new[] { "\n", ";", "!", "?", ",", ".", ":", "-", "\"", "«", "»", "(", ")", "—" })
                 s = s.Replace(c, " ");
-            s = s.ToLower().Trim().Replace("й", "и").Replace("ё", "е");
+            s = s.Trim().Replace("й", "и").Replace("ё", "е");
 
-            if (!CheckString(s, alphabet)) return;
+            if (!CheckString(s.ToLower(), alphabet)) return;
 
             Length = s.Length;
 
@@ -96,7 +96,7 @@ namespace Coder_Decoder
             foreach (string c in alphabet)
             {
                 if (c != "blank")
-                    s = s.Replace(c, "@" + Array.IndexOf(alphabet, c) + "@");
+                    s = s.Replace(c, "@" + Array.IndexOf(alphabet, c) + "@").Replace(c.ToUpper(), "@." + Array.IndexOf(alphabet, c) + "@");
             }
 
             if (s == "") s = "@" + Array.IndexOf(alphabet, "blank") + "@";
@@ -127,6 +127,8 @@ namespace Coder_Decoder
             foreach (Match m in new Regex(@"[^@]+").Matches(text))
             {
                 string path = m.Value.Replace("@", "");
+                bool upper = path[0] == '.';
+                path = path.Trim('.');
                 path = alphabet[Convert.ToInt32(path)];
                 //if (path == " ") path = "blank";
 
@@ -142,13 +144,14 @@ namespace Coder_Decoder
                     for (int j = 0; j < New.Height; j++)
                         answer.SetPixel(i + countX * 40, j + countY * 40, New.GetPixel(i, j));
 
+                if (upper) answer.SetPixel(17 + countX * 40, 17 + countY * 40, Color.FromArgb(0,0,0,0));
                 countX++;
                 if (countX == Num)
                 {
                     countY++;
                     countX = 0;
                 }
-
+                
                 value = countX + Num * countY;
                 Dispatcher.Invoke(updProgress, new object[] { ProgressBar.ValueProperty, value });
             }
@@ -172,10 +175,12 @@ namespace Coder_Decoder
         
         Bitmap image = new Bitmap(35, 35);
         
-        private bool CheckSymbol(Bitmap input, Bitmap frame)// Проверка символа
+        private bool CheckSymbol(Bitmap input, Bitmap frame, out bool upper)// Проверка символа
         {
+            upper = input.GetPixel(17, 17) == Color.FromArgb(0, 0, 0, 0);
             for (int i = 0; i < frame.Width; i++)
                 for (int j = 0; j < frame.Height; j++)
+                    if (!(i==17 && j==17 && upper)) 
                     if (input.GetPixel(i, j) != frame.GetPixel(i, j))
                         return false;
             return true;
@@ -249,11 +254,13 @@ namespace Coder_Decoder
                     foreach (FileInfo f in dd)
                     {
                         Bitmap frame = LoadBitmap(@"symbols/" + f.Name);
-                        if (CheckSymbol(symbol, frame))
+                        bool upper;
+                        if (CheckSymbol(symbol, frame, out upper))
                         {
                             ok = true;
                             string s = f.Name.Remove(f.Name.IndexOf("."));
-                            answer += s == "blank" ? " " : s;
+                            if (upper) s=s.ToUpper();
+                            answer += s == "BLANK" ? " " : s;
                             break;
                         }
                     }
