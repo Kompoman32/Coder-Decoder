@@ -83,7 +83,7 @@ namespace Coder_Decoder
 
             s = s.Replace("\r", "");
             while (s.IndexOf("  ") > -1) s = s.Replace("  ", " ");
-            foreach (string c in new[] { "\n", ";", "!", "?", ",", ".", ":", "-" })
+            foreach (string c in new[] { "\n", ";", "!", "?", ",", ".", ":", "-", "\"", "«", "»", "(", ")", "—" })
                 s = s.Replace(c, " ");
             s = s.ToLower().Trim().Replace("й", "и").Replace("ё", "е");
 
