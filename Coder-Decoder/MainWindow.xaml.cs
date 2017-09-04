@@ -213,7 +213,7 @@ namespace Coder_Decoder
                 #endregion проверка файла
 
                 Bar.Minimum = 0;
-                Bar.Maximum = Length;
+                Bar.Maximum = (image.Width / 40) * (image.Height / 40);
                 Bar.Value = 0;
                 ll=new UpdateTextVoxDelegate(textBox.SetValue); // добавление делегата, чтобы внутри асинхронного метода изменить textBox.Text
                 workerToText.RunWorkerAsync(); // асинхронная работа с progress bar'ом и создание строки
@@ -262,7 +262,7 @@ namespace Coder_Decoder
                         MessageBox.Show("Произошла ошибка в распознавании символа " + (p*countY + k + 1));
                         return;
                     }
-                    value = p + countX * k;
+                    value = k + countX * p+1;
                     Dispatcher.Invoke(updProgress, ProgressBar.ValueProperty, value);
                 }
 
